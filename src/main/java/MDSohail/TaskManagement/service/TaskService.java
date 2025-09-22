@@ -46,5 +46,16 @@ public class TaskService {
     public List<Task> searchByKeyword(String keyword) {
         return taskRepository.findByDescriptionContaining(keyword);
     }
+
+
+    public Task updateTask(Long id, Task updatedTask) {
+        return taskRepository.findById(id).map(existingTask -> {
+            existingTask.setTitle(updatedTask.getTitle());
+            existingTask.setDescription(updatedTask.getDescription());
+            return taskRepository.save(existingTask);
+        }).orElse(null);
+    }
+
+
 }
 

@@ -93,5 +93,26 @@ public class TaskController {
             return new ResponseEntity<>("Failed to search tasks", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        try {
+            Task task = taskService.updateTask(id, updatedTask);
+            if (task != null) {
+                log.info("Task with id {} updated successfully", id);
+                return new ResponseEntity<>(task, HttpStatus.OK);
+            } else {
+                log.warn("Task with id {} not found", id);
+                return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("Error updating task with id: " + id, e);
+            return new ResponseEntity<>("Failed to update task", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 }
 
